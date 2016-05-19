@@ -58,7 +58,7 @@ public class Player {
         }
     }
 
-    public void update(OrthographicCamera camera)
+    public void update(float dt, OrthographicCamera camera)
     {
         if(dPad){
             switch(touch.getInput(camera)){

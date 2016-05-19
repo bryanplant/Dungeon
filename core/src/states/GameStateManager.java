@@ -1,5 +1,6 @@
 package states;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Stack;
@@ -10,6 +11,8 @@ public class GameStateManager {
     public GameStateManager(){
         states = new Stack<State>();
     }
+
+    public void push(State state){states.push(state);}
 
     public void pop(){
         states.pop();
@@ -24,7 +27,11 @@ public class GameStateManager {
         states.peek().update(dt);
     }
 
-    public void render(SpriteBatch batch){
-        states.peek().render(batch);
+    public void render(SpriteBatch batch, BitmapFont font){
+        states.peek().render(batch, font);
+    }
+
+    public void resize(int width, int height) {
+        states.peek().resize(width, height);
     }
 }
