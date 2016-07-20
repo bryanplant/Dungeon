@@ -11,14 +11,15 @@ import states.GameStateManager;
 import states.PlayState;
 
 public class Game extends ApplicationAdapter {
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
+	public static final int WIDTH = 1200;
+	public static final int HEIGHT = 800;
 	public static final String TITLE = "Dungeon";
 
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private ShapeRenderer shape;
 	private GameStateManager gsm;
+	private MapGen mg;
 
 	@Override
 	public void create () {
@@ -26,7 +27,9 @@ public class Game extends ApplicationAdapter {
 		font = new BitmapFont(true);
 		shape = new ShapeRenderer();
 		gsm = new GameStateManager();
+		mg = new MapGen();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
+		mg.newMap(20, 20);
 		gsm.push(new PlayState(gsm));
 	}
 
