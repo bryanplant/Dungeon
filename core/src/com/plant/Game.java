@@ -29,7 +29,7 @@ public class Game extends ApplicationAdapter {
 		gsm = new GameStateManager();
 		mg = new MapGen();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		mg.newMap(20, 20);
+		mg.newMap(20,20);
 		gsm.push(new PlayState(gsm));
 	}
 

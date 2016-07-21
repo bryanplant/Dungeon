@@ -33,8 +33,8 @@ public class PlayState extends State {
 
     @Override
     protected void render(SpriteBatch batch, BitmapFont font) {
+        Gdx.gl.glClearColor(0,0,0,1);
         batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
         batch.begin();
         map.draw(batch);
         player.draw(batch, font);

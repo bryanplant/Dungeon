@@ -42,7 +42,7 @@ public class MapGen {
             for(int j = 0; j < height; j ++){
                 for(int i = 0; i < width; i ++){
                     bw.write(tile[i][j]+"");
-                    if(i < (height-1))
+                    if(i < (width-1))
                         bw.write(" ");
                 }
                 bw.newLine();
