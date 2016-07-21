@@ -20,7 +20,10 @@ public class MapGen {
         tile = new int[width][height];
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
-                tile[i][j] = rand.nextInt(4);
+                if(i == 0 || j == 0 || i == width-1 || j == height-1)
+                    tile[i][j] = 1;
+                else
+                    tile[i][j] = 0;
             }
         }
         writeToFile();
@@ -30,8 +33,9 @@ public class MapGen {
         try {
             File file = new File("map.txt");
 
-            if (!file.exists())
-                file.createNewFile();
+            if (!file.exists()) {
+                boolean newFile = file.createNewFile();
+            }
 
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);

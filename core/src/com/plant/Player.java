@@ -54,27 +54,32 @@ public class Player {
         }
     }
 
-    public void update(float dt, OrthographicCamera camera)
+    public void update(float dt, OrthographicCamera camera, Map map)
+    {
+       move(dt, camera, map);
+    }
+
+    private void move(float dt, OrthographicCamera camera, Map map)
     {
         if(dPad){
             switch(touch.getInput(camera)){
                 case 0:
-                    x += moveSpeed * Gdx.graphics.getDeltaTime();
+                    x += moveSpeed * dt;
                     direction = 0;
                     moving = true;
                     break;
                 case 1:
-                    y += moveSpeed * Gdx.graphics.getDeltaTime();
+                    y += moveSpeed * dt;
                     direction = 1;
                     moving = true;
                     break;
                 case 2:
-                    x -= moveSpeed * Gdx.graphics.getDeltaTime();
+                    x -= moveSpeed * dt;
                     direction = 2;
                     moving = true;
                     break;
                 case 3:
-                    y -= moveSpeed * Gdx.graphics.getDeltaTime();
+                    y -= moveSpeed * dt;
                     direction = 3;
                     moving = true;
                     break;
@@ -86,22 +91,22 @@ public class Player {
         }
         else{
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                x += moveSpeed * Gdx.graphics.getDeltaTime();
+                x += moveSpeed * dt;
                 direction = 0;
                 moving = true;
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                y += moveSpeed * Gdx.graphics.getDeltaTime();
+                y += moveSpeed * dt;
                 direction = 1;
                 moving = true;
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-                x -= moveSpeed * Gdx.graphics.getDeltaTime();
+                x -= moveSpeed * dt;
                 direction = 2;
                 moving = true;
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-                y -= moveSpeed * Gdx.graphics.getDeltaTime();
+                y -= moveSpeed * dt;
                 direction = 3;
                 moving = true;
             }
@@ -110,6 +115,15 @@ public class Player {
                 aniCounter = 0;
             }
         }
+        camera.position.set(x, y, 0);
+        if(x < Game.WIDTH/2)
+            camera.position.set(Game.WIDTH/2, camera.position.y, 0);
+        else if(x > map.getWidth() - Game.WIDTH/2)
+            camera.position.set(map.getWidth() - Game.WIDTH/2, camera.position.y, 0);
+        if(y < Game.HEIGHT/2)
+            camera.position.set(camera.position.x, Game.HEIGHT/2, 0);
+        else if(y > map.getHeight() - Game.HEIGHT/2)
+            camera.position.set(camera.position.x, map.getHeight() - Game.HEIGHT/2, 0);
     }
 
     public void draw(SpriteBatch batch, BitmapFont font)

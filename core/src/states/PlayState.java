@@ -1,5 +1,6 @@
 package states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.plant.Game;
@@ -26,12 +27,14 @@ public class PlayState extends State {
 
     @Override
     protected void update(float dt) {
-        player.update(dt, camera);
+        player.update(dt, camera, map);
+        camera.update();
     }
 
     @Override
     protected void render(SpriteBatch batch, BitmapFont font) {
         batch.setProjectionMatrix(camera.combined);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         batch.begin();
         map.draw(batch);
         player.draw(batch, font);
