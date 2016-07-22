@@ -44,7 +44,7 @@ public class Player {
         switch(Gdx.app.getType()){
             case Android:
                 dPad = true;
-                touch = new TouchPad(0, 400);
+                touch = new TouchPad();
                 break;
             case Desktop:
                 dPad = false;
@@ -56,7 +56,9 @@ public class Player {
 
     public void update(float dt, OrthographicCamera camera, Map map)
     {
-       move(dt, camera, map);
+        move(dt, camera, map);
+        if(dPad)
+            touch.update(camera);
     }
 
     private void move(float dt, OrthographicCamera camera, Map map)

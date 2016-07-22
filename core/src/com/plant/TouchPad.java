@@ -20,10 +20,8 @@ public class TouchPad {
     private int x;
     private int y;
 
-    public TouchPad(int x, int y)
+    public TouchPad()
     {
-        this.x = x;
-        this.y = y;
         touchPos = new Vector3();
         buttonUp = new Rectangle(x+75, y, 50, 75);
         buttonRight = new Rectangle(x+125, y+75, 75, 50);
@@ -31,6 +29,16 @@ public class TouchPad {
         buttonLeft = new Rectangle(x, y+75, 75, 50);
 
         dPadImg.flip(false, true);
+    }
+
+    public void update(OrthographicCamera camera)
+    {
+        x = ((int)camera.position.x - Game.WIDTH/2) + 25;
+        y = ((int)camera.position.y + Game.HEIGHT/2) - 225;
+        buttonUp = new Rectangle(x+75, y, 50, 75);
+        buttonRight = new Rectangle(x+125, y+75, 75, 50);
+        buttonDown = new Rectangle(x+75, y+125, 50, 75);
+        buttonLeft = new Rectangle(x, y+75, 75, 50);
     }
 
     public int getInput(OrthographicCamera camera)
