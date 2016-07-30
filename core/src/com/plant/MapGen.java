@@ -28,9 +28,9 @@ public class MapGen {
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
                 if(i == 0 || j == 0 || i == width-1 || j == height-1)
-                    tile[i][j].setType(tile[i][j].WALL);
+                    tile[i][j].setType(Tile.WALL);
                 else
-                    tile[i][j].setType(tile[i][j].EMPTY);
+                    tile[i][j].setType(Tile.EMPTY);
             }
         }
         writeToFile();
