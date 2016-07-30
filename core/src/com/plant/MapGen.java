@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class MapGen {
-    private int tile[][];
+    private Tile tile[][];
     private int width;
     private int height;
 
@@ -17,13 +17,20 @@ public class MapGen {
     {
         this.width = width;
         this.height = height;
-        tile = new int[width][height];
+        tile = new Tile[width][height];
+        for(int i = 0; i < width; i ++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                tile[i][j] = new Tile();
+            }
+        }
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
                 if(i == 0 || j == 0 || i == width-1 || j == height-1)
-                    tile[i][j] = 1;
+                    tile[i][j].setType(tile[i][j].WALL);
                 else
-                    tile[i][j] = 0;
+                    tile[i][j].setType(tile[i][j].EMPTY);
             }
         }
         writeToFile();
@@ -41,7 +48,7 @@ public class MapGen {
             BufferedWriter bw = new BufferedWriter(fw);
             for(int j = 0; j < height; j ++){
                 for(int i = 0; i < width; i ++){
-                    bw.write(tile[i][j]+"");
+                    bw.write(tile[i][j].getType()+"");
                     if(i < (width-1))
                         bw.write(" ");
                 }

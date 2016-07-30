@@ -19,6 +19,7 @@ public class Player {
     private float frameTime = 0.2f;
     private int frame = 0;
     private boolean dPad;
+    private int[] moveCounter;
 
     private Texture playerSheet = new Texture("Player.png");
     private TextureRegion[] playerImg = new TextureRegion[12];
@@ -52,6 +53,8 @@ public class Player {
             default:
                 break;
         }
+
+        moveCounter = new int[4];
     }
 
     public void update(float dt, OrthographicCamera camera, Map map)
@@ -93,30 +96,68 @@ public class Player {
         }
         else{
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+                moveCounter[0]++;
+            }
+            else{
+                moveCounter[0] = 0;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+                moveCounter[1]++;
+            }
+            else{
+                moveCounter[1] = 0;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+                moveCounter[2]++;
+            }
+            else{
+                moveCounter[2] = 0;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+                moveCounter[3]++;
+            }
+            else{
+                moveCounter[3] = 0;
+            }
+        }
+
+        //determines which direction was pressed last
+        int[] smallest = {-1 , 999999999}; //{key #, time held}
+        for(int i = 0; i < 4; i++)
+        {
+            if(moveCounter[i] < smallest[1] && moveCounter[i] != 0) {
+                smallest[0] = i;
+                smallest[1] = moveCounter[i];
+            }
+        }
+        switch(smallest[0]){
+            case 0:
                 x += moveSpeed * dt;
                 direction = 0;
                 moving = true;
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+                break;
+            case 1:
                 y += moveSpeed * dt;
                 direction = 1;
                 moving = true;
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+                break;
+            case 2:
                 x -= moveSpeed * dt;
                 direction = 2;
                 moving = true;
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+                break;
+            case 3:
                 y -= moveSpeed * dt;
                 direction = 3;
                 moving = true;
-            }
-            else{
+                break;
+            default:
                 moving = false;
                 aniCounter = 0;
-            }
+                break;
         }
+
+        //manages camera position
         camera.position.set(x, y, 0);
         if(x < Game.WIDTH/2)
             camera.position.set(Game.WIDTH/2, camera.position.y, 0);

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Map {
 
-    private char[][] tile;
+    private Tile[][] tile;
     private int tileWidth;
     private int tileHeight;
     private int tileSize = 100;
@@ -36,14 +36,21 @@ public class Map {
         tileWidth = s.indexOf("\n")/2;
         tileHeight = s.length()/s.indexOf("\n");
 
-        tile = new char[tileHeight][tileWidth];
+        tile = new Tile[tileHeight][tileWidth];
+        for(int j = 0; j < tileHeight; j++)
+        {
+            for(int i = 0; i < tileWidth; i++)
+            {
+                tile[j][i] = new Tile();
+            }
+        }
 
         int character = 0;
         for(int i = 0; i < tileHeight; i++)
         {
             for(int j = 0; j < tileWidth; j++)
             {
-                tile[i][j] = s.charAt(character);
+                tile[i][j].setType(s.charAt(character));
 
                 character+=2;
             }
@@ -60,7 +67,7 @@ public class Map {
         {
             for(int j = 0; j < tileWidth; j++)
             {
-                System.out.print(tile[i][j] + " ");
+                System.out.print(tile[i][j].getType() + " ");
             }
             System.out.println();
         }
@@ -72,7 +79,7 @@ public class Map {
         {
             for(int j = 0; j < tileWidth; j++)
             {
-                switch(tile[i][j])
+                switch(tile[i][j].getType())
                 {
                     case '0':
                         batch.draw(tileImg[0], j*tileSize, i*tileSize);
@@ -97,7 +104,7 @@ public class Map {
         tileSheet.dispose();
     }
 
-    public char[][] getTile()
+    public Tile[][] getTile()
     {
         return tile;
     }
