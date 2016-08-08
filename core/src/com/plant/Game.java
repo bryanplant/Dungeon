@@ -11,8 +11,8 @@ import states.GameStateManager;
 import states.PlayState;
 
 public class Game extends ApplicationAdapter {
-	public static final int WIDTH = 1200;
-	public static final int HEIGHT = 800;
+	public static final int WIDTH = 720;
+	public static final int HEIGHT = 1280;
 	public static final String TITLE = "Dungeon";
 
 	private SpriteBatch batch;
@@ -29,7 +29,7 @@ public class Game extends ApplicationAdapter {
 		gsm = new GameStateManager();
 		mg = new MapGen();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		mg.newMap(20,20);
+		//mg.newMap(20,20);
 		gsm.push(new PlayState(gsm));
 	}
 

@@ -12,6 +12,7 @@ public class Map {
     private int tileWidth;
     private int tileHeight;
     private int tileSize = 100;
+    private int padding = 1;
     private int width;
     private int height;
     private Texture tileSheet = new Texture("tiles.png");
@@ -23,9 +24,9 @@ public class Map {
         printMap();
 
         tileImg[0] = new TextureRegion(tileSheet, 0, 0, tileSize, tileSize);
-        tileImg[1] = new TextureRegion(tileSheet, tileSize, 0, tileSize, tileSize);
-        tileImg[2] = new TextureRegion(tileSheet, 0, tileSize, tileSize, tileSize);
-        tileImg[3] = new TextureRegion(tileSheet, tileSize, tileSize, tileSize, tileSize);
+        tileImg[1] = new TextureRegion(tileSheet, tileSize+padding, 0, tileSize, tileSize);
+        tileImg[2] = new TextureRegion(tileSheet, 0, tileSize+padding, tileSize, tileSize);
+        tileImg[3] = new TextureRegion(tileSheet, tileSize+padding, tileSize+padding, tileSize, tileSize);
     }
 
     private void loadMap(String fileName)
@@ -50,7 +51,7 @@ public class Map {
         {
             for(int j = 0; j < tileWidth; j++)
             {
-                tile[i][j].setType(s.charAt(character));
+                tile[j][i].setType(s.charAt(character));
 
                 character+=2;
             }
@@ -82,16 +83,16 @@ public class Map {
                 switch(tile[i][j].getType())
                 {
                     case '0':
-                        batch.draw(tileImg[0], j*tileSize, i*tileSize);
+                        batch.draw(tileImg[0], i*tileSize, j*tileSize);
                         break;
                     case '1':
-                        batch.draw(tileImg[1], j*tileSize, i*tileSize);
+                        batch.draw(tileImg[1], i*tileSize, j*tileSize);
                         break;
                     case '2':
-                        batch.draw(tileImg[2], j*tileSize, i*tileSize);
+                        batch.draw(tileImg[2], i*tileSize, j*tileSize);
                         break;
                     case '3':
-                        batch.draw(tileImg[3], j*tileSize, i*tileSize);
+                        batch.draw(tileImg[3], i*tileSize, j*tileSize);
                         break;
 
                 }
@@ -104,14 +105,19 @@ public class Map {
         tileSheet.dispose();
     }
 
-    public Tile[][] getTile()
+    public Tile getTile(int x, int y)
     {
-        return tile;
+        return tile[x][y];
     }
 
-    public int geTtileWidth()
+    public int getTileWidth()
     {
         return tileWidth;
+    }
+
+    public int getTileSize()
+    {
+        return tileSize;
     }
 
     public int getTileHeight()

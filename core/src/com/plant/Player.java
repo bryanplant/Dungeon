@@ -7,11 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Player {
-    private float x = 20;
-    private float y = 300;
-    private static int playerSize = 80;
+    private int x = 100;
+    private int y = 100;
+    private static int size = 80;
     private float moveSpeed = 250;
     private int direction = 0;
     private boolean moving = false;
@@ -31,13 +32,13 @@ public class Player {
         //breaks up playerSheet into TextureRegions
         for(int i = 0; i <= 11; i++){
             if(i < 3)
-                playerImg[i] = new TextureRegion(playerSheet, i*playerSize, 0, playerSize, playerSize);
+                playerImg[i] = new TextureRegion(playerSheet, i*size, 0, size, size);
             else if (i < 6)
-                playerImg[i] = new TextureRegion(playerSheet, (i-3)*playerSize, playerSize, playerSize, playerSize);
+                playerImg[i] = new TextureRegion(playerSheet, (i-3)*size, size, size, size);
             else if(i < 9)
-                playerImg[i] = new TextureRegion(playerSheet, (i-6)*playerSize, 2*playerSize, playerSize, playerSize);
+                playerImg[i] = new TextureRegion(playerSheet, (i-6)*size, 2*size, size, size);
             else
-                playerImg[i] = new TextureRegion(playerSheet, (i-9)*playerSize, 3*playerSize, playerSize, playerSize);
+                playerImg[i] = new TextureRegion(playerSheet, (i-9)*size, 3*size, size, size);
             playerImg[i].flip(false, true);
         }
 
@@ -66,90 +67,120 @@ public class Player {
 
     private void move(float dt, OrthographicCamera camera, Map map)
     {
+        int smallest[] = new int[2];
+
+        //android
         if(dPad){
             switch(touch.getInput(camera)){
                 case 0:
-                    x += moveSpeed * dt;
-                    direction = 0;
-                    moving = true;
+                    smallest[0] = 0;
                     break;
                 case 1:
-                    y += moveSpeed * dt;
-                    direction = 1;
-                    moving = true;
+                    smallest[0] = 1;
                     break;
                 case 2:
-                    x -= moveSpeed * dt;
-                    direction = 2;
-                    moving = true;
+                    smallest[0] = 2;
                     break;
                 case 3:
-                    y -= moveSpeed * dt;
-                    direction = 3;
-                    moving = true;
+                    smallest[0] = 3;
                     break;
-                case 4:
-                    moving = false;
-                    aniCounter = 0;
+                default:
+                    smallest[0] = -1;
                     break;
-            }
-        }
-        else{
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                moveCounter[0]++;
-            }
-            else{
-                moveCounter[0] = 0;
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                moveCounter[1]++;
-            }
-            else{
-                moveCounter[1] = 0;
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-                moveCounter[2]++;
-            }
-            else{
-                moveCounter[2] = 0;
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-                moveCounter[3]++;
-            }
-            else{
-                moveCounter[3] = 0;
             }
         }
 
-        //determines which direction was pressed last
-        int[] smallest = {-1 , 999999999}; //{key #, time held}
-        for(int i = 0; i < 4; i++)
-        {
-            if(moveCounter[i] < smallest[1] && moveCounter[i] != 0) {
-                smallest[0] = i;
-                smallest[1] = moveCounter[i];
+        //computer
+        else {
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                moveCounter[0]++;
+            } else {
+                moveCounter[0] = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                moveCounter[1]++;
+            } else {
+                moveCounter[1] = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                moveCounter[2]++;
+            } else {
+                moveCounter[2] = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                moveCounter[3]++;
+            } else {
+                moveCounter[3] = 0;
+            }
+
+            //determines which direction was pressed last
+            smallest = new int[]{-1, 999999999}; //{key #, time held}
+            for (int i = 0; i < 4; i++) {
+                if (moveCounter[i] < smallest[1] && moveCounter[i] != 0) {
+                    smallest[0] = i;
+                    smallest[1] = moveCounter[i];
+                }
             }
         }
-        switch(smallest[0]){
+        
+        Rectangle check1;
+        Rectangle check2;
+        switch (smallest[0]) {
             case 0:
-                x += moveSpeed * dt;
+                check1 = new Rectangle(((x+size+(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), (y/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+                check2 = new Rectangle(((x+size+(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), ((y+size)/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+
+                if (!checkTileCollision(map, check1, (int)(x+(moveSpeed*dt)), y) && !checkTileCollision(map, check2, (int)(x+(moveSpeed*dt)), y)) {
+                    x += moveSpeed * dt;
+                    moving = true;
+                }
+                else {
+                    x = (int)check1.x - size;
+                    moving = false;
+                }
                 direction = 0;
-                moving = true;
                 break;
             case 1:
-                y += moveSpeed * dt;
+                check1 = new Rectangle((x/map.getTileSize())*map.getTileSize(), ((y+size+(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+                check2 = new Rectangle(((x+size)/map.getTileSize())*map.getTileSize(), ((y+size+(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+
+                if (!checkTileCollision(map, check1, x, (int)(y+(moveSpeed*dt))) && !checkTileCollision(map, check2, x, (int)(y+(moveSpeed*dt)))) {
+                    y += moveSpeed * dt;
+                    moving = true;
+                }
+                else {
+                    y = (int)check1.y - size;
+                    moving = false;
+                }
                 direction = 1;
-                moving = true;
                 break;
             case 2:
-                x -= moveSpeed * dt;
+                check1 = new Rectangle(((x-(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), (y/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+                check2 = new Rectangle(((x-(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), ((y+size)/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+
+                if (!checkTileCollision(map, check1, (int)(x-(moveSpeed*dt)), y) && !checkTileCollision(map, check2, (int)(x-(moveSpeed*dt)), y)) {
+                    x -= moveSpeed * dt;
+                    moving = true;
+                }
+                else {
+                    x = (int)check1.x + map.getTileSize();
+                    moving = false;
+                }
                 direction = 2;
-                moving = true;
                 break;
             case 3:
-                y -= moveSpeed * dt;
+                check1 = new Rectangle((x/map.getTileSize())*map.getTileSize(), ((y-(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+                check2 = new Rectangle(((x+size)/map.getTileSize())*map.getTileSize(), ((y-(int)(moveSpeed*dt))/map.getTileSize())*map.getTileSize(), map.getTileSize(), map.getTileSize());
+
+                if (!checkTileCollision(map, check1, x, (int)(y-(moveSpeed*dt))) && !checkTileCollision(map, check2, x, (int)(y-(moveSpeed*dt)))) {
+                    y -= moveSpeed * dt;
+                    moving = true;
+                }
+                else {
+                    y = (int)check1.y + map.getTileSize();
+                    moving = false;
+                }
                 direction = 3;
-                moving = true;
                 break;
             default:
                 moving = false;
@@ -167,6 +198,16 @@ public class Player {
             camera.position.set(camera.position.x, Game.HEIGHT/2, 0);
         else if(y > map.getHeight() - Game.HEIGHT/2)
             camera.position.set(camera.position.x, map.getHeight() - Game.HEIGHT/2, 0);
+    }
+
+    public boolean checkTileCollision(Map map, Rectangle check, int x, int y)
+    {
+        if(!map.getTile((int)check.x/map.getTileSize(), (int)check.y/map.getTileSize()).isSolid())
+            return false;
+
+        Rectangle playerBox = new Rectangle(x, y, size, size);
+
+        return playerBox.overlaps(check);
     }
 
     public void draw(SpriteBatch batch, BitmapFont font)
@@ -204,6 +245,8 @@ public class Player {
         aniCounter += Gdx.graphics.getDeltaTime();
         if((aniCounter/frameTime) >= 4)
             aniCounter = 0;
+
+        font.draw(batch, Float.toString(aniCounter), 200, 200);
     }
 
     public void dispose()
