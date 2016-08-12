@@ -16,7 +16,7 @@ public class TouchPad {
     private Rectangle buttonDown;
     private Rectangle buttonLeft;
     private Texture dPad = new Texture("dPad.png");
-    private TextureRegion dPadImg = new TextureRegion(dPad, 200, 200);
+    private TextureRegion dPadImg = new TextureRegion(dPad, 300, 300);
     private int x;
     private int y;
 
@@ -34,11 +34,11 @@ public class TouchPad {
     public void update(OrthographicCamera camera)
     {
         x = ((int)camera.position.x - Game.WIDTH/2) + 25;
-        y = ((int)camera.position.y + Game.HEIGHT/2) - 225;
-        buttonUp = new Rectangle(x+75, y, 50, 75);
-        buttonRight = new Rectangle(x+125, y+75, 75, 50);
-        buttonDown = new Rectangle(x+75, y+125, 50, 75);
-        buttonLeft = new Rectangle(x, y+75, 75, 50);
+        y = ((int)camera.position.y + 315);
+        buttonUp = new Rectangle(x+113, y, 74, 113);
+        buttonRight = new Rectangle(x+187, y+113, 113, 74);
+        buttonDown = new Rectangle(x+113, y+187, 74, 113);
+        buttonLeft = new Rectangle(x, y+113, 113, 74);
     }
 
     public int getInput(OrthographicCamera camera)
@@ -73,9 +73,6 @@ public class TouchPad {
     public void draw(SpriteBatch batch, BitmapFont font)
     {
         batch.draw(dPad, x, y);
-        font.draw(batch, Float.toString(touchPos.x) + ", " + Float.toString(touchPos.y), 0, 0);
-        font.draw(batch, Float.toString(buttonUp.x) + ", " + Float.toString(buttonUp.y), 0, 15);
-        font.draw(batch, Float.toString(x) + ", " + Float.toString(y), 0, 30);
     }
 
 

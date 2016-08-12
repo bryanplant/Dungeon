@@ -63,6 +63,7 @@ public class Player {
         move(dt, camera, map);
         if(dPad)
             touch.update(camera);
+        shoot();
     }
 
     private void move(float dt, OrthographicCamera camera, Map map)
@@ -122,7 +123,7 @@ public class Player {
                 }
             }
         }
-        
+
         Rectangle check1;
         Rectangle check2;
         switch (smallest[0]) {
@@ -210,6 +211,11 @@ public class Player {
         return playerBox.overlaps(check);
     }
 
+    public void shoot()
+    {
+
+    }
+
     public void draw(SpriteBatch batch, BitmapFont font)
     {
         if(dPad)
@@ -245,8 +251,6 @@ public class Player {
         aniCounter += Gdx.graphics.getDeltaTime();
         if((aniCounter/frameTime) >= 4)
             aniCounter = 0;
-
-        font.draw(batch, Float.toString(aniCounter), 200, 200);
     }
 
     public void dispose()

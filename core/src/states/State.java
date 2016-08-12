@@ -3,6 +3,7 @@ package states;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -24,7 +25,7 @@ public abstract class State {
 
     protected abstract void handleInput();
     protected abstract void update(float dt);
-    protected abstract void render(SpriteBatch batch, BitmapFont font);
+    protected abstract void render(SpriteBatch batch, ShapeRenderer shape, BitmapFont font);
     protected abstract void dispose();
     protected abstract void resize(int width, int height);
 }

@@ -2,6 +2,7 @@ package states;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.Stack;
 
@@ -27,8 +28,8 @@ public class GameStateManager {
         states.peek().update(dt);
     }
 
-    public void render(SpriteBatch batch, BitmapFont font){
-        states.peek().render(batch, font);
+    public void render(SpriteBatch batch, ShapeRenderer shape, BitmapFont font){
+        states.peek().render(batch, shape, font);
     }
 
     public void resize(int width, int height) {
