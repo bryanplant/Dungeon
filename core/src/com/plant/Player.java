@@ -7,7 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+
+import java.util.Iterator;
+import java.util.Vector;
 
 public class Player {
     private int x = 100;
@@ -21,6 +25,7 @@ public class Player {
     private int frame = 0;
     private boolean dPad;
     private int[] moveCounter;
+    private Vector<Bullet> b;
 
     private Texture playerSheet = new Texture("Player.png");
     private TextureRegion[] playerImg = new TextureRegion[12];
@@ -56,6 +61,7 @@ public class Player {
         }
 
         moveCounter = new int[4];
+        b = new Vector<Bullet>(0);
     }
 
     public void update(float dt, OrthographicCamera camera, Map map)
@@ -63,7 +69,7 @@ public class Player {
         move(dt, camera, map);
         if(dPad)
             touch.update(camera);
-        shoot();
+        shoot(dt);
     }
 
     private void move(float dt, OrthographicCamera camera, Map map)
@@ -211,12 +217,18 @@ public class Player {
         return playerBox.overlaps(check);
     }
 
-    public void shoot()
+    public void shoot(float dt)
     {
-
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            b.add(new Bullet(x, y, direction, 20));
+        }
+        Iterator<Bullet> i = b.iterator();
+        while (i.hasNext()) {
+            i.next().update(dt);
+        }
     }
 
-    public void draw(SpriteBatch batch, BitmapFont font)
+    public void draw(SpriteBatch batch, BitmapFont font, ShapeRenderer shape)
     {
         if(dPad)
             touch.draw(batch, font);
@@ -251,6 +263,11 @@ public class Player {
         aniCounter += Gdx.graphics.getDeltaTime();
         if((aniCounter/frameTime) >= 4)
             aniCounter = 0;
+
+        Iterator<Bullet> i = b.iterator();
+        while (i.hasNext()) {
+            i.next().draw(shape);
+        }
     }
 
     public void dispose()

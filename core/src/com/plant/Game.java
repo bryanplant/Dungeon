@@ -19,7 +19,7 @@ public class Game extends ApplicationAdapter {
 	private BitmapFont font;
 	private ShapeRenderer shape;
 	private GameStateManager gsm;
-	private MapGen mg;
+	//private MapGen mg;
 
 	@Override
 	public void create () {
@@ -27,9 +27,7 @@ public class Game extends ApplicationAdapter {
 		font = new BitmapFont(true);
 		shape = new ShapeRenderer();
 		gsm = new GameStateManager();
-		mg = new MapGen();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		//mg.newMap(20,20);
 		gsm.push(new PlayState(gsm));
 	}
 

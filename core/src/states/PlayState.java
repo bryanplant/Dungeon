@@ -40,7 +40,7 @@ public class PlayState extends State {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         map.draw(batch);
-        player.draw(batch, font);
+        player.draw(batch, font, shape);
         batch.end();
     }
 
